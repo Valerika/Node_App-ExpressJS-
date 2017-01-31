@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%=title%></title>
+        <script type="text/javascript" src="/../js/jquery-3.1.1.min.js"></script>
+        <link rel="stylesheet" href="/../css/style.css">
+    </head>
+<body>
+<form method="post" action="" id="the-form">
+    <div class="logo">
+      <img src="/../image/logo.png" alt="logo" width="365px">
+    </div>
+    <div class="page-data">
+    <h3>Edit The Information Department</h3>
+    <table cellpadding="11">
+    <tr>
+        <td class="label">Name</td><td><input type="text" name="name" value="<%=data[0].name%>"></td>
+     </tr>
+    <tr>
+        <td class="label">Description</td><td><textarea type="text" name="description" value="<%=data[0].description%>"><%=data[0].description%></textarea></td>
+     </tr>
+     <tr>
+        <td class="label"></td>
+        <td>
+            <input type="button" value="Save" onClick="saveDepartments()">
+            <a class="a-inside delete" href="/departments">Cancel</a>
+        </td>
+     </tr>
+    </table>
+  </div>
+</form>
+ <script>
+
+        function saveDepartments(){
+
+           $.ajax({
+
+            url:"/departments/"+<%=data[0].id%>,
+            type:"put",
+            data:$("#the-form").serialize(),
+            success:function(res){
+
+                window.location.href = '/departments';
+                return false;
+            },
+            error:function(xhr, status, error){
+
+                console.log(xhr.responseText);
+                var err = '';
+                $.each(JSON.parse(xhr.responseText) , function(i, item) {
+
+                     err +='<li>'+item.msg+'</li>';
+                });
+                $(".err-area").html(err);
+                return false;
+            }
+
+           });
+        }
+
+    </script>
+</body>
+</html>
